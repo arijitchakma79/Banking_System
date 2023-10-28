@@ -13,7 +13,7 @@ public class Bank {
 	}
 
 	public void addAccount(int uniqueId, double aprValue) {
-		accounts.put(uniqueId, new Account(uniqueId, aprValue));
+		accounts.put(uniqueId, new Savings(uniqueId, aprValue));
 	}
 
 	public Account retrieveAccount(int uniqueId) {
