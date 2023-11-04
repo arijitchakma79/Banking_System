@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class AccountTest {
 	public static final double SUPPLIED_APR = 5.0;
 	public static final int SUPPLIED_BALANCE = 1000;
-	public static final int UNIQUE_ID = 60020001;
+	public static final String UNIQUE_ID = "60020001";
 	Account certificateOfDeposit;
 
 	@BeforeEach

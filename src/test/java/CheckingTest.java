@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class CheckingTest {
 	public static final int SUPPLIED_APR = 5;
-	public static final int UNIQUE_ID = 60020001;
+	public static final String UNIQUE_ID = "60020001";
 	Checking checking;
 
 	@BeforeEach

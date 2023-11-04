@@ -2,15 +2,15 @@ public abstract class Account {
 	public static final double DEFAULT_BALANCE = 0.0;
 	double balance;
 	private double apr;
-	private int uniqueId;
+	private String uniqueId;
 
-	public Account(int uniqueId, double apr) {
+	public Account(String uniqueId, double apr) {
 		this.balance = DEFAULT_BALANCE;
 		this.apr = apr;
 		this.uniqueId = uniqueId;
 	}
 
-	public Account(int uniqueId, double balance, double apr) {
+	public Account(String uniqueId, double balance, double apr) {
 		this.balance = balance;
 		this.apr = apr;
 		this.uniqueId = uniqueId;
@@ -36,7 +36,7 @@ public abstract class Account {
 		}
 	}
 
-	public int getUniqueId() {
+	public String getUniqueId() {
 		return uniqueId;
 	}
 }

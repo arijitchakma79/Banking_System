@@ -2,30 +2,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Bank {
-	private Map<Integer, Account> accounts;
+	private Map<String, Account> accounts;
 
 	Bank() {
 		accounts = new HashMap<>();
 	}
 
-	public Map<Integer, Account> getAccounts() {
+	public Map<String, Account> getAccounts() {
 		return accounts;
 	}
 
-	public void addAccount(int uniqueId, double aprValue) {
-		accounts.put(uniqueId, new Savings(uniqueId, aprValue) {
-		});
+	public void addAccount(Account account) {
+		accounts.put(account.getUniqueId(), account);
 	}
 
-	public Account retrieveAccount(int uniqueId) {
+	public Account retrieveAccount(String uniqueId) {
 		return accounts.get(uniqueId);
 	}
 
-	public void depositAmount(int uniqueId, double amountToDeposit) {
+	public void depositAmount(String uniqueId, double amountToDeposit) {
 		accounts.get(uniqueId).depositBalance(amountToDeposit);
 	}
 
-	public void withdrawAmount(int uniqueId, double withdrawnAmount) {
+	public void withdrawAmount(String uniqueId, double withdrawnAmount) {
 		accounts.get(uniqueId).withdrawBalance(withdrawnAmount);
 	}
 }
