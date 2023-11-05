@@ -31,7 +31,7 @@ public class DepositValidator {
 			return false;
 		}
 
-		if (amountValue < 0 || !isDepositAmountValid(account, amountValue)) {
+		if (!isDepositAmountValid(account, amountValue)) {
 			return false;
 		}
 		return true;
@@ -41,7 +41,6 @@ public class DepositValidator {
 		if (amountValue < 0 || amountValue > account.getMaximumDepositAmount()) {
 			return false;
 		}
-
 		return true;
 	}
 
