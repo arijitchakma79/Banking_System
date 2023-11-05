@@ -31,10 +31,17 @@ public class DepositValidator {
 			return false;
 		}
 
-		if (amountValue < 0 || (account instanceof Savings && amountValue > 2500)
-				|| (account instanceof Checking && amountValue > 1000)) {
+		if (amountValue < 0 || !isDepositAmountValid(account, amountValue)) {
 			return false;
 		}
+		return true;
+	}
+
+	private boolean isDepositAmountValid(Account account, double amountValue) {
+		if (amountValue < 0 || amountValue > account.getMaximumDepositAmount()) {
+			return false;
+		}
+
 		return true;
 	}
 

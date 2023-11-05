@@ -7,8 +7,10 @@ public class CreateValidator {
 
 	public boolean validate(String command) {
 		String[] tokens = command.split(" ");
-		if (tokens.length != 4) {
-			return false;
+		if (!"cd".equals(tokens[1])) {
+			if (tokens.length != 4) {
+				return false;
+			}
 		}
 
 		String accountType = tokens[1];
