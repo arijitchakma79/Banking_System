@@ -27,4 +27,12 @@ public class Bank {
 	public void withdrawAmount(String uniqueId, double withdrawnAmount) {
 		accounts.get(uniqueId).withdrawBalance(withdrawnAmount);
 	}
+
+	public boolean accountExistByUniqueId(String uniqueId) {
+		if (accounts.containsKey(uniqueId)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
