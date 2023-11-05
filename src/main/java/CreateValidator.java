@@ -7,7 +7,7 @@ public class CreateValidator {
 
 	public boolean validate(String command) {
 		String[] tokens = command.split(" ");
-		if (tokens.length < 4) {
+		if (tokens.length != 4) {
 			return false;
 		}
 
@@ -32,7 +32,7 @@ public class CreateValidator {
 		}
 
 		if (accountType.equals("cd")) {
-			if (tokens.length < 5) {
+			if (tokens.length != 5) {
 				return false;
 			}
 
