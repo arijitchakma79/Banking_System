@@ -1,3 +1,5 @@
+package banking;
+
 public abstract class Account {
 	public static final double DEFAULT_BALANCE = 0.0;
 	double balance;

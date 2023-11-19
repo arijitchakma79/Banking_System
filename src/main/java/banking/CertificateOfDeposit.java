@@ -1,3 +1,5 @@
+package banking;
+
 public class CertificateOfDeposit extends Account {
 
 	public CertificateOfDeposit(String uniqueId, double apr, double suppliedBalance) {

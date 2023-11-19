@@ -1,3 +1,5 @@
+package banking;
+
 public class CommandProcessor {
 	public Bank bank;
 
@@ -43,7 +45,7 @@ public class CommandProcessor {
 
 		default:
 			throw new IllegalArgumentException(
-					"Unsupported Account Type. Please choose between checking/savings/cd" + accountType);
+					"Unsupported banking.Account Type. Please choose between checking/savings/cd" + accountType);
 		}
 
 	}
@@ -58,7 +60,7 @@ public class CommandProcessor {
 			if (!(account instanceof CertificateOfDeposit)) {
 				bank.depositAmount(uniqueId, depositAmount);
 			} else {
-				throw new UnsupportedOperationException("Cannot deposit to CertificateOfDeposit");
+				throw new UnsupportedOperationException("Cannot deposit to banking.CertificateOfDeposit");
 			}
 		} else {
 			throw new IllegalArgumentException("Amount not found: " + uniqueId);
