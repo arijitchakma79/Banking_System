@@ -46,4 +46,12 @@ public class Bank {
 			return false;
 		}
 	}
+
+	public void removeAccount(String uniqueId) {
+		accounts.remove(uniqueId);
+	}
+
+	public void passTime(int months) {
+		TimePasser.passTime(months);
+	}
 }
