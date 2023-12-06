@@ -18,9 +18,22 @@ public class CommandProcessor {
 
 		case "deposit":
 			depositCommand(parts);
+			break;
+
+		case "withdraw":
+			withdrawCommand(parts);
+			break;
+
+		case "transfer":
+			transferCommand(parts);
+			break;
+
+		case "pass":
+			passTimeCommand(parts);
+			break;
 
 		default:
-			break;
+			throw new IllegalArgumentException("Unsupported action: " + action);
 		}
 	}
 
@@ -64,6 +77,42 @@ public class CommandProcessor {
 			}
 		} else {
 			throw new IllegalArgumentException("Amount not found: " + uniqueId);
+		}
+	}
+
+	private void withdrawCommand(String[] parts) {
+		String uniqueId = parts[1];
+		double withdrawAmount = Double.parseDouble(parts[2]);
+
+		Account account = bank.retrieveAccount(uniqueId);
+
+		if (account != null) {
+			if (!(account instanceof CertificateOfDeposit)) {
+				bank.withdrawAmount(uniqueId, withdrawAmount);
+			} else {
+				throw new UnsupportedOperationException("Cannot Withdraw from a CD account");
+			}
+		} else {
+			throw new IllegalArgumentException("Account Not Found :" + uniqueId);
+		}
+	}
+
+	private void transferCommand(String[] parts) {
+		String fromUniqueId = parts[1];
+		String toUniqueId = parts[2];
+		double transferAmount = Double.parseDouble(parts[3]);
+
+		bank.transferAmount(fromUniqueId, toUniqueId, transferAmount);
+	}
+
+	private void passTimeCommand(String[] parts) {
+		String monthString = parts[1];
+
+		try {
+			int months = Integer.parseInt(monthString);
+			bank.passTime(months);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("Invalid months: " + monthString);
 		}
 	}
 
