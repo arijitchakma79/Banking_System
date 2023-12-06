@@ -1,6 +1,11 @@
 public class CertificateOfDeposit extends Account {
 
-	public CertificateOfDeposit(double suppliedBalance, double apr, String uniqueId) {
+	public CertificateOfDeposit(String uniqueId, double apr, double suppliedBalance) {
 		super(uniqueId, suppliedBalance, apr);
+	}
+
+	@Override
+	public double getMaximumDepositAmount() {
+		return 0;
 	}
 }

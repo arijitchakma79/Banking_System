@@ -11,7 +11,7 @@ public class AccountTest {
 
 	@BeforeEach
 	void setUp() {
-		certificateOfDeposit = new CertificateOfDeposit(SUPPLIED_BALANCE, SUPPLIED_APR, UNIQUE_ID);
+		certificateOfDeposit = new CertificateOfDeposit(UNIQUE_ID, SUPPLIED_APR, SUPPLIED_BALANCE);
 	}
 
 	@Test

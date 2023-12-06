@@ -9,7 +9,7 @@ public class CertificateOfDepositTest {
 
 	@BeforeEach
 	void setUp() {
-		certificateOfDeposit = new CertificateOfDeposit(1000, 5, UNIQUE_ID);
+		certificateOfDeposit = new CertificateOfDeposit(UNIQUE_ID, 5, 1000);
 	}
 
 	@Test

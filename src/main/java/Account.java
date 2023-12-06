@@ -39,4 +39,7 @@ public abstract class Account {
 	public String getUniqueId() {
 		return uniqueId;
 	}
+
+	public abstract double getMaximumDepositAmount();
+
 }
