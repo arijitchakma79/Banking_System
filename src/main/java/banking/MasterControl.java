@@ -4,19 +4,19 @@ import java.util.List;
 
 public class MasterControl {
 	private CommandProcessor commandProcessor;
-	private AccountValidator accountValidator;
+	private CommandValidator commandValidator;
 	private CommandStorage commandStorage;
 
-	public MasterControl(AccountValidator accountValidator, CommandProcessor commandProcessor,
+	public MasterControl(CommandValidator accountValidator, CommandProcessor commandProcessor,
 			CommandStorage commandStorage) {
-		this.accountValidator = accountValidator;
+		this.commandValidator = accountValidator;
 		this.commandProcessor = commandProcessor;
 		this.commandStorage = commandStorage;
 	}
 
 	public List<String> start(List<String> input) {
 		for (String command : input) {
-			if (accountValidator.validate(command)) {
+			if (commandValidator.validate(command)) {
 				commandProcessor.processCommand(command);
 			} else {
 				commandStorage.addInvalidCommands(command);

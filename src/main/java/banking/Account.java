@@ -6,10 +6,13 @@ public abstract class Account {
 	private double apr;
 	private String uniqueId;
 
+	private Integer time;
+
 	public Account(String uniqueId, double apr) {
 		this.balance = DEFAULT_BALANCE;
 		this.apr = apr;
 		this.uniqueId = uniqueId;
+		this.time = 0;
 	}
 
 	public Account(String uniqueId, double balance, double apr) {
@@ -43,5 +46,9 @@ public abstract class Account {
 	}
 
 	public abstract double getMaximumDepositAmount();
+
+	public Integer getTime() {
+		return time;
+	}
 
 }

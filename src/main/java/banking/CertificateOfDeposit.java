@@ -10,4 +10,8 @@ public class CertificateOfDeposit extends Account {
 	public double getMaximumDepositAmount() {
 		return 0;
 	}
+
+	public boolean isEligibleForWithdrawal() {
+		return (getTime() > 12);
+	}
 }

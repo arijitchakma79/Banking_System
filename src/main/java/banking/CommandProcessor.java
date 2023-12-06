@@ -60,7 +60,7 @@ public class CommandProcessor {
 			if (!(account instanceof CertificateOfDeposit)) {
 				bank.depositAmount(uniqueId, depositAmount);
 			} else {
-				throw new UnsupportedOperationException("Cannot deposit to banking.CertificateOfDeposit");
+				throw new UnsupportedOperationException("Cannot deposit to CertificateOfDeposit");
 			}
 		} else {
 			throw new IllegalArgumentException("Amount not found: " + uniqueId);
