@@ -41,6 +41,17 @@ public abstract class Account {
 		}
 	}
 
+	public void transferBalance(Account toAccount, double amount) {
+		if (this instanceof CertificateOfDeposit) {
+			throw new UnsupportedOperationException("Transfers from CertificateOfDeposit accounts are not allowed.");
+		}
+
+		if (amount > 0) {
+			this.withdrawBalance(amount);
+			toAccount.depositBalance(amount);
+		}
+	}
+
 	public String getUniqueId() {
 		return uniqueId;
 	}
