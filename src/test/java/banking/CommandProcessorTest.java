@@ -34,9 +34,9 @@ public class CommandProcessorTest {
 
 	@Test
 	void testCreateCertificateOfDeposit() {
-		String command = "create cd 12345666 2.0 1200";
+		String command = "create cd 12345678 2.0 2000";
 		commandProcessor.processCommand(command);
-		assertTrue(bank.accountExistByUniqueId("12345666"));
+		assertTrue(bank.accountExistByUniqueId("12345678"));
 	}
 
 	@Test

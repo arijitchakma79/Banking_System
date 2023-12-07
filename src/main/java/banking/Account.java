@@ -1,5 +1,8 @@
 package banking;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Account {
 	public static final double DEFAULT_BALANCE = 0.0;
 	double balance;
@@ -7,12 +10,14 @@ public abstract class Account {
 	private String uniqueId;
 
 	private Integer time;
+	private List<String> transactionCommands;
 
 	public Account(String uniqueId, double apr) {
 		this.balance = DEFAULT_BALANCE;
 		this.apr = apr;
 		this.uniqueId = uniqueId;
 		this.time = 0;
+		this.transactionCommands = new ArrayList<>();
 	}
 
 	public Account(String uniqueId, double balance, double apr) {
@@ -62,4 +67,15 @@ public abstract class Account {
 		return time;
 	}
 
+	public void addTransactionCommand(String command) {
+		transactionCommands.add(command);
+	}
+
+	public List<String> getTransactionCommands() {
+		return new ArrayList<>(transactionCommands);
+	}
+
+	public void incrementTime() {
+		time++;
+	}
 }

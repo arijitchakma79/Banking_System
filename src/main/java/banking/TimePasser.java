@@ -23,7 +23,7 @@ public class TimePasser {
 		Map<String, Account> accounts = bank.getAccounts();
 
 		for (Account account : accounts.values()) {
-			if (account.getBalance() == 0) {
+			if (account.getBalance() >= 0) {
 				bank.removeAccount(account.getUniqueId());
 			} else if (account.getBalance() < 100) {
 				account.withdrawBalance(25);
@@ -43,6 +43,8 @@ public class TimePasser {
 					((Savings) account).resetWithdrawalCount();
 				}
 			}
+			account.incrementTime();
 		}
 	}
+
 }

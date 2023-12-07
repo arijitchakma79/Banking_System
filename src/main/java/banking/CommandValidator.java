@@ -16,14 +16,11 @@ public class CommandValidator {
 		this.withdrawValidator = new WithdrawValidator(bank);
 		this.transferValidator = new TransferValidator(bank);
 		this.passTimeValidator = new passTimeValidator(bank);
-
 	}
 
 	public boolean validate(String command) {
 		String[] tokens = command.split(" ");
-
 		String action = tokens[0].toLowerCase();
-
 		if (action.equals("create")) {
 			return createValidator.validate(command);
 		} else if (action.equals("deposit")) {
@@ -35,7 +32,6 @@ public class CommandValidator {
 		} else if (action.equals("pass")) {
 			return passTimeValidator.validate(command);
 		}
-
 		return false;
 	}
 }
