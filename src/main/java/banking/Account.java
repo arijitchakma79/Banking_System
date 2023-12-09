@@ -8,7 +8,6 @@ public abstract class Account {
 	double balance;
 	private double apr;
 	private String uniqueId;
-
 	private Integer time;
 	private List<String> transactionCommands;
 
@@ -24,6 +23,8 @@ public abstract class Account {
 		this.balance = balance;
 		this.apr = apr;
 		this.uniqueId = uniqueId;
+		this.time = 0;
+		this.transactionCommands = new ArrayList<>();
 	}
 
 	public double getBalance() {

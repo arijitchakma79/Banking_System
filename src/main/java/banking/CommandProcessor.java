@@ -38,6 +38,8 @@ public class CommandProcessor {
 		default:
 			throw new IllegalArgumentException("Unsupported action: " + action);
 		}
+
+		output.addAll(collectAccountOutput());
 	}
 
 	public List<String> getOutput() {
@@ -65,7 +67,6 @@ public class CommandProcessor {
 					"Unsupported banking.Account Type. Please choose between checking/savings/cd" + accountType);
 		}
 
-		// output.addAll(collectAccountOutput());
 	}
 
 	private void depositCommand(String[] parts) {
@@ -84,7 +85,6 @@ public class CommandProcessor {
 			throw new IllegalArgumentException("Account not found: " + uniqueId);
 		}
 
-		// output.addAll(collectAccountOutput());
 	}
 
 	private void withdrawCommand(String[] parts) {
@@ -103,7 +103,6 @@ public class CommandProcessor {
 			throw new IllegalArgumentException("Account Not Found :" + uniqueId);
 		}
 
-		// output.addAll(collectAccountOutput());
 	}
 
 	private void transferCommand(String[] parts) {
@@ -113,7 +112,6 @@ public class CommandProcessor {
 
 		bank.transferAmount(fromUniqueId, toUniqueId, transferAmount);
 
-		// output.addAll(collectAccountOutput());
 	}
 
 	private void passTimeCommand(String[] parts) {
@@ -125,7 +123,6 @@ public class CommandProcessor {
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Invalid months: " + monthString);
 		}
-		// output.addAll(collectAccountOutput());
 	}
 
 	private List<String> collectAccountOutput() {
