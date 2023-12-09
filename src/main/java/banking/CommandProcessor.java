@@ -21,18 +21,23 @@ public class CommandProcessor {
 
 		switch (action) {
 		case "create":
+		case "Create":
 			createCommand(parts);
 			break;
 		case "deposit":
+		case "Deposit":
 			depositCommand(parts);
 			break;
 		case "withdraw":
+		case "Withdraw":
 			withdrawCommand(parts);
 			break;
 		case "transfer":
+		case "Transfer":
 			transferCommand(parts);
 			break;
 		case "pass":
+		case "Pass":
 			passTimeCommand(parts);
 			break;
 		default:
@@ -94,15 +99,25 @@ public class CommandProcessor {
 		Account account = bank.retrieveAccount(uniqueId);
 
 		if (account != null) {
-			if (!(account instanceof CertificateOfDeposit)) {
-				bank.withdrawAmount(uniqueId, withdrawAmount);
+			if (account instanceof CertificateOfDeposit) {
+				CertificateOfDeposit cdAccount = (CertificateOfDeposit) account;
+
+				if (cdAccount.isEligibleForWithdrawal()) {
+					if (withdrawAmount >= account.getBalance() && account.getTime() >= 12) {
+						bank.withdrawAmount(uniqueId, withdrawAmount);
+					} else {
+						throw new UnsupportedOperationException(
+								"For CD accounts with 12 or more months, you can only withdraw the entire balance at once.");
+					}
+				} else {
+					throw new UnsupportedOperationException("Cannot withdraw from a CD account before 12 months.");
+				}
 			} else {
-				throw new UnsupportedOperationException("Cannot Withdraw from a CD account");
+				bank.withdrawAmount(uniqueId, withdrawAmount);
 			}
 		} else {
-			throw new IllegalArgumentException("Account Not Found :" + uniqueId);
+			throw new IllegalArgumentException("Account Not Found: " + uniqueId);
 		}
-
 	}
 
 	private void transferCommand(String[] parts) {

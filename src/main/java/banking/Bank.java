@@ -52,6 +52,7 @@ public class Bank {
 	}
 
 	public void passTime(int months) {
-		TimePasser.passTime(months);
+		TimePasser timePasser = new TimePasser(this);
+		timePasser.passTime(months);
 	}
 }
