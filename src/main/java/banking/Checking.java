@@ -10,4 +10,8 @@ public class Checking extends Account {
 	public double getMaximumDepositAmount() {
 		return 1000;
 	}
+
+	public double getMaximumWithdrawalAmount() {
+		return 400;
+	}
 }

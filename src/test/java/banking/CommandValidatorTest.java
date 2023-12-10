@@ -398,4 +398,371 @@ public class CommandValidatorTest {
 
 	}
 
+	@Test
+	void validate_withdrawal_of_savings_account_with_valid_amount() {
+		Account savings = new Savings("12345678", 2);
+		bank.addAccount(savings);
+		bank.depositAmount("12345678", 2000);
+		boolean actual = accountValidator.validate("Withdraw 12345678 1000");
+		assertTrue(actual);
+	}
+
+	@Test
+	void validate_withdrawal_of_savings_account_with_more_than_maximum_amount() {
+		Account savings = new Savings("12345678", 2);
+		bank.addAccount(savings);
+		bank.depositAmount("12345678", 2000);
+		boolean actual = accountValidator.validate("Withdraw 12345678 1200");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_withdrawal_of_negative_amount_from_savings_account() {
+		Account savings = new Savings("12345678", 2);
+		bank.addAccount(savings);
+		bank.depositAmount("12345678", 2000);
+		boolean actual = accountValidator.validate("Withdraw 12345678 -1000");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_withdraw_of_string_amount_from_savings_account() {
+		Account savings = new Savings("12345678", 2);
+		bank.addAccount(savings);
+		bank.depositAmount("12345678", 2000);
+		boolean actual = accountValidator.validate("Withdraw 12345678 'five hundred'");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_withdrawal_of_savings_account_with_values_slightly_exceeding_maximum_amount() {
+		Account savings = new Savings("12345678", 2);
+		bank.addAccount(savings);
+		bank.depositAmount("12345678", 2000);
+		boolean actual = accountValidator.validate("Withdraw 12345678 1000.001");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_withdrawing_of_amount_zero_from_savings_account() {
+		Account savings = new Savings("12345678", 2);
+		bank.addAccount(savings);
+		bank.depositAmount("12345678", 2000);
+		boolean actual = accountValidator.validate("Withdraw 12345678 0");
+		assertTrue(actual);
+	}
+
+	@Test
+	void validate_withdrawing_of_amount_exceeding_the_savings_account_balance() {
+		Account savings = new Savings("12345678", 2);
+		bank.addAccount(savings);
+		bank.depositAmount("12345678", 500);
+		boolean actual = accountValidator.validate("Withdraw 12345678 800");
+		assertTrue(actual);
+	}
+
+	@Test
+	void validate_withdrawing_amount_from_savings_account_with_one_argument_missing() {
+		Account savings = new Savings("12345678", 2);
+		bank.addAccount(savings);
+		bank.depositAmount("12345678", 500);
+		boolean actual = accountValidator.validate("Withdraw 12345678");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_withdrawing_amount_from_savings_account_with_one_additional_argument() {
+		Account savings = new Savings("12345678", 2);
+		bank.addAccount(savings);
+		bank.depositAmount("12345678", 500);
+		boolean actual = accountValidator.validate("Withdraw 12345678 800 0");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_withdrawing_from_savings_with_case_insensitive_command() {
+		Account savings = new Savings("12345678", 2);
+		bank.addAccount(savings);
+		bank.depositAmount("12345678", 500);
+		boolean actual = accountValidator.validate("witHdRaW 12345678 200");
+		assertTrue(actual);
+
+	}
+
+	@Test
+	void validate_checking_account_with_valid_amount() {
+		Account checking = new Checking("12345678", 2);
+		bank.addAccount(checking);
+		bank.depositAmount("12345678", 2000);
+		boolean actual = accountValidator.validate("Withdraw 12345678 400");
+		assertTrue(actual);
+	}
+
+	@Test
+	void validate_checking_account_with_more_than_maximum_amount() {
+		Account checking = new Checking("12345678", 2);
+		bank.addAccount(checking);
+		bank.depositAmount("12345678", 2000);
+		boolean actual = accountValidator.validate("Withdraw 12345678 1200");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_negative_checking_account_withdrawal() {
+		Account checking = new Checking("12345678", 2);
+		bank.addAccount(checking);
+		bank.depositAmount("12345678", 2000);
+		boolean actual = accountValidator.validate("Withdraw 12345678 -1000");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_string_checking_account_withdrawal() {
+		Account checking = new Checking("12345678", 2);
+		bank.addAccount(checking);
+		bank.depositAmount("12345678", 2000);
+		boolean actual = accountValidator.validate("Withdraw 12345678 'five hundred'");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_checking_account_withdrawal_slightly_exceeding_maximum_amount() {
+		Account checking = new Checking("12345678", 2);
+		bank.addAccount(checking);
+		bank.depositAmount("12345678", 2000);
+		boolean actual = accountValidator.validate("Withdraw 12345678 400.001");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_checking_account_withdrawal_of_amount_zero() {
+		Account checking = new Checking("12345678", 2);
+		bank.addAccount(checking);
+		bank.depositAmount("12345678", 2000);
+		boolean actual = accountValidator.validate("Withdraw 12345678 0");
+		assertTrue(actual);
+	}
+
+	@Test
+	void validate_checking_account_withdrawal_exceeding_balance() {
+		Account checking = new Checking("12345678", 2);
+		bank.addAccount(checking);
+		bank.depositAmount("12345678", 500);
+		boolean actual = accountValidator.validate("Withdraw 12345678 800");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_checking_account_with_one_argument_missing() {
+		Account checking = new Checking("12345678", 2);
+		bank.addAccount(checking);
+		bank.depositAmount("12345678", 500);
+		boolean actual = accountValidator.validate("Withdraw 12345678");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_checking_account_with_one_additional_argument() {
+		Account checking = new Checking("12345678", 2);
+		bank.addAccount(checking);
+		bank.depositAmount("12345678", 500);
+		boolean actual = accountValidator.validate("Withdraw 12345678 200 00");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_checking_account_with_case_insensitive_command() {
+		Account checking = new Checking("12345678", 2);
+		bank.addAccount(checking);
+		bank.depositAmount("12345678", 500);
+		boolean actual = accountValidator.validate("WitHdraW 12345678 200");
+		assertTrue(actual);
+	}
+
+	@Test
+	void validate_withdrawing_from_cd_account() {
+		Account cd = new CertificateOfDeposit("12345678", 2, 2000);
+		bank.addAccount(cd);
+		boolean actual = accountValidator.validate("withdraw 12345678 2000");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_withdrawing_less_amount_than_its_actual_balance_from_cd_account() {
+		Account cd = new CertificateOfDeposit("12345678", 2, 2000);
+		bank.addAccount(cd);
+		bank.passTime(13);
+		boolean actual = accountValidator.validate("Withdraw 12345678 1000");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_withdrawing_negative_from_cd_account() {
+		Account cd = new CertificateOfDeposit("12345678", 2, 2000);
+		bank.addAccount(cd);
+		bank.passTime(13);
+		boolean actual = accountValidator.validate("Withdraw 12345678 -1000");
+		assertFalse(actual);
+
+	}
+
+	@Test
+	void validate_checking_if_cd_account_is_eligible_to_withdraw_after_12_months() {
+		Account cd = new CertificateOfDeposit("12345678", 2, 2000);
+		bank.addAccount(cd);
+		bank.passTime(13);
+		boolean isEligible = ((CertificateOfDeposit) cd).isEligibleForWithdrawal();
+		assertTrue(isEligible);
+	}
+
+	@Test
+	void validate_transfer_of_correct_amount() {
+		Account saving = new Savings("12345677", 2);
+		bank.addAccount(saving);
+		Account checking = new Checking("12345678", 3);
+		bank.addAccount(checking);
+		boolean actual = accountValidator.validate("Transfer 12345677 12345678 400");
+		assertTrue(actual);
+	}
+
+	@Test
+	void validate_transfer_of_balance_from_non_existing_id_to_existing_id() {
+		Account saving = new Savings("12345678", 3);
+		bank.addAccount(saving);
+		boolean actual = accountValidator.validate("Transfer 12345679 12345678 400");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_transfer_of_balance_from_existing_id_to_non_existing_id() {
+		Account saving = new Savings("12345678", 3);
+		bank.addAccount(saving);
+		boolean actual = accountValidator.validate("Transfer 12345678 12345676 400");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_transfer_of_zero_amount() {
+		Account saving = new Savings("12345677", 2);
+		bank.addAccount(saving);
+		Account checking = new Checking("12345678", 3);
+		bank.addAccount(checking);
+		boolean actual = accountValidator.validate("Transfer 12345677 12345678 0");
+		assertTrue(actual);
+	}
+
+	@Test
+	void validate_transfer_of_negative_amount() {
+		Account saving = new Savings("12345677", 2);
+		bank.addAccount(saving);
+		Account checking = new Checking("12345678", 3);
+		bank.addAccount(checking);
+		boolean actual = accountValidator.validate("Transfer 12345677 12345678 -100");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_transfer_from_cd_account() {
+		Account cd = new CertificateOfDeposit("12345678", 2, 2000);
+		bank.addAccount(cd);
+		Account saving = new Savings("12345677", 2);
+		bank.addAccount(saving);
+		boolean actual = accountValidator.validate("Transfer 12345678 12345677 400");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_transfer_to_cd_account() {
+		Account cd = new CertificateOfDeposit("12345678", 2, 2000);
+		bank.addAccount(cd);
+		Account saving = new Savings("12345677", 2);
+		bank.addAccount(saving);
+		boolean actual = accountValidator.validate("Transfer 12345677 12345678 400");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_transfer_of_amount_in_string() {
+		Account cd = new CertificateOfDeposit("12345678", 2, 2000);
+		bank.addAccount(cd);
+		Account saving = new Savings("12345677", 2);
+		bank.addAccount(saving);
+		boolean actual = accountValidator.validate("Transfer 12345677 12345678 ten");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_transfer_from_savings_to_checking_exceeding_savings_withdrawal_max_limit() {
+
+		Account saving = new Savings("12345677", 2);
+		bank.addAccount(saving);
+		Account checking = new Checking("12345678", 3);
+		bank.addAccount(checking);
+		boolean actual = accountValidator.validate("Transfer 12345677 12345678 20000");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_transfer_from_savings_to_checking_exceeding_savings_withdrawal_max_limit_boundaries_slightly() {
+
+		Account saving = new Savings("12345677", 2);
+		bank.addAccount(saving);
+		Account checking = new Checking("12345678", 3);
+		bank.addAccount(checking);
+		boolean actual = accountValidator.validate("Transfer 12345677 12345678 1000.0001");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_transfer_from_checking_to_saving_exceeding_checking_withdrawal_max_limit() {
+
+		Account saving = new Savings("12345677", 2);
+		bank.addAccount(saving);
+		Account checking = new Checking("12345678", 3);
+		bank.addAccount(checking);
+		boolean actual = accountValidator.validate("Transfer 12345678 12345677 5000");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_transfer_from_checking_to_saving_exceeding_checking_withdrawal_max_limit_boundaries_slightly() {
+
+		Account saving = new Savings("12345677", 2);
+		bank.addAccount(saving);
+		Account checking = new Checking("12345678", 3);
+		bank.addAccount(checking);
+		boolean actual = accountValidator.validate("Transfer 12345678 12345677 400.000001");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_pass_time_command_by_proving_right_values() {
+		boolean actual = accountValidator.validate("Pass 1");
+		assertTrue(actual);
+	}
+
+	@Test
+	void validate_pass_time_command_by_giving_values_less_than_min_value() {
+		boolean actual = accountValidator.validate("Pass 0");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_pass_time_command_by_giving_values_more_than_max_value() {
+		boolean actual = accountValidator.validate("Pass 61");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_pass_time_by_providing_negative_input() {
+		boolean actual = accountValidator.validate("Pass -1");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_pass_time_by_providing_string_input() {
+		boolean actual = accountValidator.validate("Pass ten");
+		assertFalse(actual);
+	}
+
 }

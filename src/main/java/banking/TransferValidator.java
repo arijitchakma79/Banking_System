@@ -8,14 +8,14 @@ public class TransferValidator {
 	}
 
 	public boolean validate(String command) {
-		String[] token = command.split(" ");
-		if (token.length != 4) {
+		String[] tokens = command.split(" ");
+		if (tokens.length != 4) {
 			return false;
 		}
 
-		String fromId = token[1];
-		String toId = token[2];
-		String amount = token[3];
+		String fromId = tokens[1];
+		String toId = tokens[2];
+		String amount = tokens[3];
 
 		if (!bank.accountExistByUniqueId(fromId) || !bank.accountExistByUniqueId(toId)) {
 			return false;
@@ -38,6 +38,39 @@ public class TransferValidator {
 		if (amountValue < 0) {
 			return false;
 		}
+
+		if (!isValidWithdrawal(fromAccount, amountValue)) {
+			return false;
+		}
+
+		if (!isValidDeposit(toAccount, amountValue)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean isValidWithdrawal(Account account, double amount) {
+		if (account instanceof Savings && amount > ((Savings) account).getMaximumWithdrawalAmount()) {
+			return false;
+		}
+
+		if (account instanceof Checking && amount > ((Checking) account).getMaximumWithdrawalAmount()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean isValidDeposit(Account account, double amount) {
+		if (account instanceof Savings && amount > ((Savings) account).getMaximumDepositAmount()) {
+			return false;
+		}
+
+		if (account instanceof Checking && amount > ((Checking) account).getMaximumDepositAmount()) {
+			return false;
+		}
+
 		return true;
 	}
 }
