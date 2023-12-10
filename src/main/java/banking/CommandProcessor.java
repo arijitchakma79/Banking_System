@@ -1,3 +1,5 @@
+package banking;
+
 public class CommandProcessor {
 	public Bank bank;
 
@@ -43,7 +45,7 @@ public class CommandProcessor {
 
 		default:
 			throw new IllegalArgumentException(
-					"Unsupported Account Type. Please choose between checking/savings/cd" + accountType);
+					"Unsupported banking.Account Type. Please choose between checking/savings/cd" + accountType);
 		}
 
 	}

@@ -1,13 +1,17 @@
-public class AccountValidator {
+package banking;
+
+public class CommandValidator {
 
 	private Bank bank;
 	private CreateValidator createValidator;
 	private DepositValidator depositValidator;
+	private WithdrawValidator withdrawValidator;
 
-	public AccountValidator(Bank bank) {
+	public CommandValidator(Bank bank) {
 		this.bank = bank;
 		this.createValidator = new CreateValidator(bank);
 		this.depositValidator = new DepositValidator(bank);
+		this.withdrawValidator = new WithdrawValidator(bank);
 	}
 
 	public boolean validate(String command) {
