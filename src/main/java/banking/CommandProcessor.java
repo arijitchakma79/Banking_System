@@ -112,6 +112,16 @@ public class CommandProcessor {
 				} else {
 					throw new UnsupportedOperationException("Cannot withdraw from a CD account before 12 months.");
 				}
+			} else if (account instanceof Savings) {
+				Savings savingsAccount = (Savings) account;
+
+				if (savingsAccount.getWithdrawalCount() < savingsAccount.getMaxWithdrawalsPerMonth()) {
+					bank.withdrawAmount(uniqueId, withdrawAmount);
+					savingsAccount.incrementWithdrawalCount();
+				} else {
+					throw new UnsupportedOperationException(
+							"Cannot withdraw more than once in a month for Savings account.");
+				}
 			} else {
 				bank.withdrawAmount(uniqueId, withdrawAmount);
 			}

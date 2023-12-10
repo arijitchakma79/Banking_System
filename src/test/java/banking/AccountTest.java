@@ -61,4 +61,21 @@ public class AccountTest {
 		assertEquals(500, actual);
 	}
 
+	@Test
+	void getTransferring_amount_gets_withdrawn() {
+		Account saving = new Savings("12345556", 2);
+		checkingAccount.depositBalance(2000);
+		checkingAccount.transferBalance(saving, 1000);
+		assertEquals(1000, checkingAccount.getBalance());
+	}
+
+	@Test
+	void transferring_amount_gets_deposited() {
+		Account saving = new Savings("12345556", 2);
+		checkingAccount.depositBalance(2000);
+		saving.depositBalance(1000);
+		checkingAccount.transferBalance(saving, 1000);
+		assertEquals(2000, saving.getBalance());
+	}
+
 }

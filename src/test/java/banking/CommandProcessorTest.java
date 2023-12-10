@@ -16,7 +16,7 @@ public class CommandProcessorTest {
 	}
 
 	@Test
-	void testCreateCheckingAccount() {
+	void test_create_checking_account() {
 		String command = "create checking 12345678 2.0";
 		commandProcessor.processCommand(command);
 
@@ -24,7 +24,7 @@ public class CommandProcessorTest {
 	}
 
 	@Test
-	void testCreateSavingAccount() {
+	void test_create_saving_account() {
 		String command = "create savings 12345677 2.0";
 		commandProcessor.processCommand(command);
 
@@ -32,14 +32,14 @@ public class CommandProcessorTest {
 	}
 
 	@Test
-	void testCreateCertificateOfDeposit() {
+	void test_create_certificate_of_deposit() {
 		String command = "create cd 12345678 2.0 2000";
 		commandProcessor.processCommand(command);
 		assertTrue(bank.accountExistByUniqueId("12345678"));
 	}
 
 	@Test
-	void testDepositToNewlyCreatedChecking() {
+	void test_deposit_to_newly_created_checking() {
 		String createChecking = "create checking 12345678 0.8";
 		String depositCommand = "deposit 12345678 100";
 		commandProcessor.processCommand(createChecking);
@@ -49,7 +49,7 @@ public class CommandProcessorTest {
 	}
 
 	@Test
-	void testDepositToExistingChecking() {
+	void test_deposit_to_existing_checking() {
 		String createChecking = "create checking 12345678 0.8";
 		String depositCommand = "deposit 12345678 100";
 		String depositAgain = "deposit 12345678 100";
@@ -61,7 +61,7 @@ public class CommandProcessorTest {
 	}
 
 	@Test
-	void testDepositToNewlyCreatedSavings() {
+	void test_deposit_to_newly_created_savings() {
 		String createChecking = "create savings 12345678 0.8";
 		String depositCommand = "deposit 12345678 100";
 		commandProcessor.processCommand(createChecking);
@@ -71,7 +71,7 @@ public class CommandProcessorTest {
 	}
 
 	@Test
-	void testDepositToExistingSavings() {
+	void test_deposit_to_existing_savings() {
 		String createChecking = "create savings 12345678 0.8";
 		String depositCommand = "deposit 12345678 100";
 		String depositAgain = "deposit 12345678 100";
@@ -83,7 +83,7 @@ public class CommandProcessorTest {
 	}
 
 	@Test
-	void testDepositToCdAccount() {
+	void test_deposit_to_cd_account() {
 		String createCd = "create cd 12345678 2000 2";
 		String depositCommand = "deposit 12345678 300";
 		commandProcessor.processCommand(createCd);
@@ -93,7 +93,7 @@ public class CommandProcessorTest {
 	}
 
 	@Test
-	void testWithdrawFromSavings() {
+	void test_withdraw_from_savings() {
 		String createSavings = "Create savings 12345678 2";
 		String depositSavings = "Deposit 12345678 2000";
 		String savingWithdraw = "Withdraw 12345678 1000";
@@ -105,21 +105,68 @@ public class CommandProcessorTest {
 	}
 
 	@Test
-	void testWithDrawingFromSavingsTwice() {
+	void test_withdrawing_from_savings_twice() {
 		String createSavings = "Create savings 12345678 2";
 		String depositSavings = "Deposit 12345678 2000";
 		String savingWithdraw = "Withdraw 12345678 1000";
 		String savingsWithdraw2 = "Withdraw 12345678 200";
+
 		commandProcessor.processCommand(createSavings);
 		commandProcessor.processCommand(depositSavings);
 		commandProcessor.processCommand(savingWithdraw);
-		commandProcessor.processCommand(savingsWithdraw2);
 
-		assertEquals(800, bank.retrieveAccount("12345678").getBalance());
+		// Check the first withdrawal
+		assertEquals(1000, bank.retrieveAccount("12345678").getBalance());
+
+		// Now try to withdraw a second time in the same month
+		Exception exception = assertThrows(UnsupportedOperationException.class, () -> {
+			commandProcessor.processCommand(savingsWithdraw2);
+		});
+
+		// Check the error message or other details as needed
+		assertEquals("Cannot withdraw more than once in a month for Savings account.", exception.getMessage());
+
+		// Ensure that the balance remains unchanged after the second withdrawal attempt
+		assertEquals(1000, bank.retrieveAccount("12345678").getBalance());
 	}
 
 	@Test
-	void getTestWithDrawingFromChecking() {
+	void testing_withdrawing_twice_after_passing_months() {
+		String createSavings = "Create savings 12345678 2";
+		String depositSavings = "Deposit 12345678 2000";
+		String savingWithdraw = "Withdraw 12345678 1000";
+		String passTime = "Pass 1";
+		String savingsWithdraw2 = "Withdraw 12345678 200";
+		commandProcessor.processCommand(createSavings);
+		commandProcessor.processCommand(depositSavings);
+		commandProcessor.processCommand(savingWithdraw);
+		commandProcessor.processCommand(passTime);
+		commandProcessor.processCommand(savingsWithdraw2);
+		assertEquals(801.6666666666666, bank.retrieveAccount("12345678").getBalance());
+
+	}
+
+	@Test
+	void testing_withdrawing_thrice_after_passing_months() {
+		String createSavings = "Create savings 12345678 2";
+		String depositSavings = "Deposit 12345678 2000";
+		String savingWithdraw = "Withdraw 12345678 1000";
+		String passTime = "Pass 1";
+		String savingsWithdraw2 = "Withdraw 12345678 200";
+		String savingsWithdraw3 = "Withdraw 12345678 300";
+		commandProcessor.processCommand(createSavings);
+		commandProcessor.processCommand(depositSavings);
+		commandProcessor.processCommand(savingWithdraw);
+		commandProcessor.processCommand(passTime);
+		commandProcessor.processCommand(savingsWithdraw2);
+		commandProcessor.processCommand(passTime);
+		commandProcessor.processCommand(savingsWithdraw3);
+		assertEquals(503.00277777777774, bank.retrieveAccount("12345678").getBalance());
+
+	}
+
+	@Test
+	void get_test_withdrawing_from_checking() {
 		String createChecking = "Create checking 12345678 2";
 		String depositChecking = "Deposit 12345678 2000";
 		String checkingWithdraw = "Withdraw 12345678 1000";
@@ -131,7 +178,7 @@ public class CommandProcessorTest {
 	}
 
 	@Test
-	void testWithdrawingFromCheckingTwice() {
+	void test_withdrawing_from_checking_twice() {
 		String createChecking = "Create checking 12345678 2";
 		String depositChecking = "Deposit 12345678 2000";
 		String checkingWithdraw = "Withdraw 12345678 1000";
@@ -145,7 +192,7 @@ public class CommandProcessorTest {
 	}
 
 	@Test
-	void testWithdrawingFromCd() {
+	void test_with_drawing_from_cd() {
 		String createCd = "Create cd 12345678 2000 2";
 		String withdrawCd = "Withdraw 12345678 1000";
 		commandProcessor.processCommand(createCd);
@@ -156,7 +203,7 @@ public class CommandProcessorTest {
 	}
 
 	@Test
-	void testWithdrawFromCd2After12Months() {
+	void test_withdraw_from_cd_2_after_12_months() {
 		String createCd = "Create cd 12345678 2.1 2000";
 		String passTime = "Pass 15";
 		String withdrawCommand = "Withdraw 12345678 3000";

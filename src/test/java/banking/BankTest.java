@@ -27,6 +27,27 @@ public class BankTest {
 	}
 
 	@Test
+	void retrieves_balance_successfully() {
+		assertEquals(0, checkingAccount.getBalance());
+	}
+
+	@Test
+	void retrieves_apr_successfully() {
+		assertEquals(3, checkingAccount.getAPR());
+	}
+
+	@Test
+	void retrieves_unique_id_successfully() {
+		assertEquals("64002009", checkingAccount.getUniqueId());
+	}
+
+	@Test
+	void retrieves_time_successfully() {
+
+		assertEquals(0, checkingAccount.getTime());
+	}
+
+	@Test
 	void bank_has_1_account_after_an_account_is_added() {
 		bank.addAccount(savingsAccount);
 		assertEquals(1, bank.getAccounts().size());
@@ -171,14 +192,54 @@ public class BankTest {
 
 		assertFalse(bank.getAccounts().containsKey(UNIQUE_ID));
 	}
-	/*
-	 * This test does not pass yet.
-	 * 
-	 * @Test void close_account_with_zero_balance_after_passing_time() {
-	 * bank.addAccount(savingsAccount);
-	 * assertTrue(bank.getAccounts().containsKey(UNIQUE_ID)); assertEquals(0,
-	 * bank.retrieveAccount(UNIQUE_ID).getBalance()); bank.passTime(1);
-	 * 
-	 * assertFalse(bank.getAccounts().containsKey(UNIQUE_ID)); }
-	 */
+
+	@Test
+	void pass_time_commands_increases_time_in_an_account() {
+		Account cd = new CertificateOfDeposit("12345678", 2, 2000);
+		bank.addAccount(cd);
+		bank.passTime(12);
+
+		assertEquals(12, bank.retrieveAccount("12345678").getTime());
+	}
+
+	@Test
+	void pass_time_commands_increases_time_in_every_account() {
+		Account cd = new CertificateOfDeposit("12345678", 2, 2000);
+		bank.addAccount(cd);
+		bank.addAccount(checkingAccount);
+		bank.addAccount(savingsAccount);
+		bank.depositAmount(UNIQUE_ID, 1000);
+		bank.depositAmount(UNIQUE_ID2, 1000);
+		bank.passTime(12);
+		assertEquals(12, bank.retrieveAccount(UNIQUE_ID).getTime());
+		assertEquals(12, bank.retrieveAccount(UNIQUE_ID2).getTime());
+		assertEquals(12, bank.retrieveAccount("12345678").getTime());
+	}
+
+	@Test
+	void apr_calculation_for_savings_account() {
+		Account savings = new Savings("12345678", 3);
+		bank.addAccount(savings);
+		bank.depositAmount("12345678", 1000);
+		bank.passTime(1);
+		assertEquals(1002.5, bank.retrieveAccount("12345678").getBalance());
+	}
+
+	@Test
+	void apr_calculation_for_checking_account() {
+		Account checking = new Checking("12345678", 3);
+		bank.addAccount(checking);
+		bank.depositAmount("12345678", 1000);
+		bank.passTime(1);
+		assertEquals(1002.5, bank.retrieveAccount("12345678").getBalance());
+	}
+
+	@Test
+	void apr_calculation_for_cd_account() {
+		Account cd = new CertificateOfDeposit("12345678", 2.1, 2000);
+		bank.addAccount(cd);
+		bank.passTime(1);
+		assertEquals(2014.0367928937578, bank.retrieveAccount("12345678").getBalance());
+	}
+
 }

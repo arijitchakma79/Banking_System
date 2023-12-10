@@ -22,6 +22,8 @@ public class MasterControl {
 				commandStorage.addInvalidCommands(command);
 			}
 		}
-		return commandStorage.getInvalidCommands();
+		List<String> output = commandProcessor.getOutput();
+		output.addAll(commandStorage.getInvalidCommands());
+		return output;
 	}
 }
