@@ -30,6 +30,15 @@ public class Bank {
 		accounts.get(uniqueId).withdrawBalance(withdrawnAmount);
 	}
 
+	public void transferAmount(String fromUniqueId, String toUniqueId, double amount) {
+		if (accountExistByUniqueId(fromUniqueId) && accountExistByUniqueId(toUniqueId)) {
+			Account fromAccount = retrieveAccount(fromUniqueId);
+			Account toAccount = retrieveAccount(toUniqueId);
+
+			fromAccount.transferBalance(toAccount, amount);
+		}
+	}
+
 	public boolean accountExistByUniqueId(String uniqueId) {
 		if (accounts.containsKey(uniqueId)) {
 			return true;
@@ -37,4 +46,14 @@ public class Bank {
 			return false;
 		}
 	}
+
+	public void removeAccount(String uniqueId) {
+		accounts.remove(uniqueId);
+	}
+
+	public void passTime(int months) {
+		TimePasser timePasser = new TimePasser(this);
+		timePasser.passTime(months);
+	}
+
 }

@@ -19,4 +19,5 @@ public class CertificateOfDepositTest {
 		double actual = certificateOfDeposit.getBalance();
 		assertEquals(1000, actual);
 	}
+
 }

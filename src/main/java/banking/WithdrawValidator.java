@@ -22,10 +22,6 @@ public class WithdrawValidator {
 
 		Account account = bank.retrieveAccount(uniqueId);
 
-		if (account instanceof CertificateOfDeposit) {
-			return false;
-		}
-
 		double amountValue;
 		try {
 			amountValue = Double.parseDouble(amount);
@@ -64,7 +60,7 @@ public class WithdrawValidator {
 
 	private boolean isWithdrawnValidForChecking(Account account, double amountValue) {
 		Checking checkingAccount = (Checking) account;
-		return (amountValue <= 400);
+		return (amountValue <= checkingAccount.getMaximumWithdrawalAmount());
 	}
 
 	private boolean isWithdrawnValidForSaving(Account account, double amountValue) {

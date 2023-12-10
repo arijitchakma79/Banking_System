@@ -25,6 +25,10 @@ public class Savings extends Account {
 		return withdrawalCount;
 	}
 
+	public void incrementWithdrawalCount() {
+		withdrawalCount++;
+	}
+
 	public void resetWithdrawalCount() {
 		withdrawalCount = 0;
 	}
