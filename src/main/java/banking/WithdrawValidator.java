@@ -9,7 +9,7 @@ public class WithdrawValidator {
 
 	public boolean validate(String command) {
 		String[] tokens = command.split(" ");
-		if (tokens.length != 3) {
+		if (isInvalidCommand(tokens)) {
 			return false;
 		}
 
@@ -22,69 +22,52 @@ public class WithdrawValidator {
 
 		Account account = bank.retrieveAccount(uniqueId);
 
-		double amountValue;
+		double amountValue = parseAmount(amount);
+		if (isInvalidAmount(amountValue) || !isValidWithdrawal(account, amountValue)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean isInvalidCommand(String[] tokens) {
+		return tokens.length != 3;
+	}
+
+	private double parseAmount(String amount) {
 		try {
-			amountValue = Double.parseDouble(amount);
+			return Double.parseDouble(amount);
 		} catch (NumberFormatException e) {
-			return false;
+			return -1;
 		}
-
-		if (amountValue < 0 || amountValue > getMaximumWithdrawalAmount(account)) {
-			return false;
-		}
-		if (account instanceof Savings && !isWithdrawnValidForSaving(account, amountValue)) {
-			return false;
-		}
-
-		if (account instanceof Checking && !isWithdrawnValidForChecking(account, amountValue)) {
-			return false;
-		}
-
-		if (account instanceof CertificateOfDeposit && !isWithdrawnValidForCD(account, amountValue)) {
-			return false;
-		}
-		return true;
 	}
 
-	private boolean isWithdrawnValidForCD(Account account, double amountValue) {
-		CertificateOfDeposit cdAccount = (CertificateOfDeposit) account;
-
-		if (!cdAccount.isEligibleForWithdrawal()) {
-			return false;
-		}
-		if (amountValue < cdAccount.getBalance()) {
-			return false;
-		}
-		return true;
+	private boolean isInvalidAmount(double amountValue) {
+		return amountValue < 0;
 	}
 
-	private boolean isWithdrawnValidForChecking(Account account, double amountValue) {
-		Checking checkingAccount = (Checking) account;
-		return (amountValue <= checkingAccount.getMaximumWithdrawalAmount());
-	}
-
-	private boolean isWithdrawnValidForSaving(Account account, double amountValue) {
-		Savings savingsAccount = (Savings) account;
-
-		if (amountValue > savingsAccount.getMaximumWithdrawalAmount()) {
-			return false;
-		}
-
-		if (savingsAccount.getWithdrawalCount() >= savingsAccount.getMaxWithdrawalsPerMonth()) {
-			return false;
-		}
-
-		// If both conditions are met, the withdrawal is valid
-		return true;
-	}
-
-	private double getMaximumWithdrawalAmount(Account account) {
+	private boolean isValidWithdrawal(Account account, double amountValue) {
 		if (account instanceof Savings) {
-			return 1000;
+			return isWithdrawnValidForSaving((Savings) account, amountValue);
 		} else if (account instanceof Checking) {
-			return 400;
+			return isWithdrawnValidForChecking((Checking) account, amountValue);
+		} else if (account instanceof CertificateOfDeposit) {
+			return isWithdrawnValidForCD((CertificateOfDeposit) account, amountValue);
 		}
-		return 0;
+
+		return false;
 	}
 
+	private boolean isWithdrawnValidForCD(CertificateOfDeposit cdAccount, double amountValue) {
+		return cdAccount.isEligibleForWithdrawal() && amountValue >= cdAccount.getBalance();
+	}
+
+	private boolean isWithdrawnValidForChecking(Checking checkingAccount, double amountValue) {
+		return amountValue <= checkingAccount.getMaximumWithdrawalAmount();
+	}
+
+	private boolean isWithdrawnValidForSaving(Savings savingsAccount, double amountValue) {
+		return amountValue <= savingsAccount.getMaximumWithdrawalAmount()
+				&& savingsAccount.getWithdrawalCount() < savingsAccount.getMaxWithdrawalsPerMonth();
+	}
 }

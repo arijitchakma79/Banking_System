@@ -8,15 +8,14 @@ public class DepositValidator {
 	}
 
 	public boolean validate(String command) {
-
 		String[] tokens = command.split(" ");
 
 		if (tokens.length != 3) {
 			return false;
 		}
 
-		String amount = tokens[2];
 		String uniqueId = tokens[1];
+		String amount = tokens[2];
 
 		if (!bank.accountExistByUniqueId(uniqueId)) {
 			return false;
@@ -24,28 +23,19 @@ public class DepositValidator {
 
 		Account account = bank.retrieveAccount(uniqueId);
 
-		if (account instanceof CertificateOfDeposit) {
+		if (account instanceof CertificateOfDeposit || !isDepositAmountValid(account, amount)) {
 			return false;
 		}
 
-		double amountValue;
+		return true;
+	}
+
+	private boolean isDepositAmountValid(Account account, String amount) {
 		try {
-			amountValue = Double.parseDouble(amount);
+			double amountValue = Double.parseDouble(amount);
+			return amountValue >= 0 && amountValue <= account.getMaximumDepositAmount();
 		} catch (NumberFormatException e) {
 			return false;
 		}
-
-		if (!isDepositAmountValid(account, amountValue)) {
-			return false;
-		}
-		return true;
 	}
-
-	private boolean isDepositAmountValid(Account account, double amountValue) {
-		if (amountValue < 0 || amountValue > account.getMaximumDepositAmount()) {
-			return false;
-		}
-		return true;
-	}
-
 }

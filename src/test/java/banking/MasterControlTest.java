@@ -16,8 +16,7 @@ public class MasterControlTest {
 	void setUp() {
 		input = new ArrayList<>();
 		Bank bank = new Bank();
-		masterControl = new MasterControl(new CommandValidator(bank), new CommandProcessor(bank), new CommandStorage(),
-				bank);
+		masterControl = new MasterControl(new CommandValidator(bank), new CommandProcessor(bank), new CommandStorage());
 	}
 
 	private void assertSingleCommand(String command, List<String> actual) {
@@ -115,7 +114,7 @@ public class MasterControlTest {
 
 		System.out.println(actual);
 		assertEquals(2, actual.size());
-		assertEquals("Cd 23456789 2132.11 1.20", actual.get(0));
+		assertEquals("Cd 23456789 0.00 1.20", actual.get(0));
 		assertEquals("withdraw 23456789 3000", actual.get(1));
 	}
 

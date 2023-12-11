@@ -11,15 +11,16 @@ public abstract class Account {
 	private Integer time;
 	private List<String> transactionCommands;
 
-	public Account(String uniqueId, double apr) {
-		this.balance = DEFAULT_BALANCE;
-		this.apr = apr;
-		this.uniqueId = uniqueId;
-		this.time = 0;
-		this.transactionCommands = new ArrayList<>();
+	public Account(String uniqueId, double balance, double apr) {
+		initialize(uniqueId, balance, apr);
 	}
 
-	public Account(String uniqueId, double balance, double apr) {
+	public Account(String uniqueId, double apr) {
+
+		initialize(uniqueId, DEFAULT_BALANCE, apr);
+	}
+
+	private void initialize(String uniqueId, double balance, double apr) {
 		this.balance = balance;
 		this.apr = apr;
 		this.uniqueId = uniqueId;

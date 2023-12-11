@@ -1,10 +1,9 @@
 package banking;
 
 public class passTimeValidator {
-	private Bank bank;
 
-	public passTimeValidator(Bank bank) {
-		this.bank = bank;
+	public passTimeValidator() {
+
 	}
 
 	public boolean validate(String command) {

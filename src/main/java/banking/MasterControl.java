@@ -7,14 +7,13 @@ public class MasterControl {
 	private CommandProcessor commandProcessor;
 	private CommandValidator commandValidator;
 	private CommandStorage commandStorage;
-	private Bank bank;
 
 	public MasterControl(CommandValidator commandValidator, CommandProcessor commandProcessor,
-			CommandStorage commandStorage, Bank bank) {
+			CommandStorage commandStorage) {
 		this.commandValidator = commandValidator;
 		this.commandProcessor = commandProcessor;
 		this.commandStorage = commandStorage;
-		this.bank = bank;
+
 	}
 
 	public List<String> start(List<String> input) {

@@ -9,7 +9,7 @@ public class TransferValidator {
 
 	public boolean validate(String command) {
 		String[] tokens = command.split(" ");
-		if (tokens.length != 4) {
+		if (isInvalidTransferCommand(tokens)) {
 			return false;
 		}
 
@@ -17,60 +17,69 @@ public class TransferValidator {
 		String toId = tokens[2];
 		String amount = tokens[3];
 
-		if (!bank.accountExistByUniqueId(fromId) || !bank.accountExistByUniqueId(toId)) {
+		if (!areValidAccounts(fromId, toId)) {
 			return false;
 		}
 
 		Account fromAccount = bank.retrieveAccount(fromId);
 		Account toAccount = bank.retrieveAccount(toId);
 
-		if (fromAccount instanceof CertificateOfDeposit || toAccount instanceof CertificateOfDeposit) {
+		if (isCertificateOfDeposit(fromAccount) || isCertificateOfDeposit(toAccount)) {
 			return false;
 		}
 
-		double amountValue;
+		double amountValue = parseAmount(amount);
+		return isValidTransfer(fromAccount, toAccount, amountValue);
+	}
+
+	private boolean isInvalidTransferCommand(String[] tokens) {
+		return tokens.length != 4;
+	}
+
+	private boolean areValidAccounts(String fromId, String toId) {
+		return bank.accountExistByUniqueId(fromId) && bank.accountExistByUniqueId(toId);
+	}
+
+	private boolean isCertificateOfDeposit(Account account) {
+		return account instanceof CertificateOfDeposit;
+	}
+
+	private double parseAmount(String amount) {
 		try {
-			amountValue = Double.parseDouble(amount);
+			return Double.parseDouble(amount);
 		} catch (NumberFormatException e) {
-			return false;
+			return -1;
 		}
+	}
 
-		if (amountValue < 0) {
-			return false;
-		}
+	private boolean isValidTransfer(Account fromAccount, Account toAccount, double amountValue) {
+		return isNonNegativeAmount(amountValue) && isValidWithdrawal(fromAccount, amountValue)
+				&& isValidDeposit(toAccount, amountValue);
+	}
 
-		if (!isValidWithdrawal(fromAccount, amountValue)) {
-			return false;
-		}
-
-		if (!isValidDeposit(toAccount, amountValue)) {
-			return false;
-		}
-
-		return true;
+	private boolean isNonNegativeAmount(double amountValue) {
+		return amountValue >= 0;
 	}
 
 	private boolean isValidWithdrawal(Account account, double amount) {
-		if (account instanceof Savings && amount > ((Savings) account).getMaximumWithdrawalAmount()) {
-			return false;
+		if (account instanceof Savings) {
+			return isWithdrawalValidForSaving(account, amount);
+		} else if (account instanceof Checking) {
+			return isWithdrawalValidForChecking(account, amount);
 		}
 
-		if (account instanceof Checking && amount > ((Checking) account).getMaximumWithdrawalAmount()) {
-			return false;
-		}
+		return false;
+	}
 
-		return true;
+	private boolean isWithdrawalValidForSaving(Account account, double amount) {
+		return amount <= ((Savings) account).getMaximumWithdrawalAmount();
+	}
+
+	private boolean isWithdrawalValidForChecking(Account account, double amount) {
+		return amount <= ((Checking) account).getMaximumWithdrawalAmount();
 	}
 
 	private boolean isValidDeposit(Account account, double amount) {
-		if (account instanceof Savings && amount > ((Savings) account).getMaximumDepositAmount()) {
-			return false;
-		}
-
-		if (account instanceof Checking && amount > ((Checking) account).getMaximumDepositAmount()) {
-			return false;
-		}
-
-		return true;
+		return amount <= account.getMaximumDepositAmount();
 	}
 }

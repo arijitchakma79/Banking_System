@@ -222,6 +222,7 @@ public class CommandValidatorTest {
 	@Test
 	void validate_create_cd_command_with_no_initial_balance() {
 		boolean actual = accountValidator.validate("create cd 12345678 0.6");
+		System.out.println(actual);
 		assertFalse(actual);
 	}
 
