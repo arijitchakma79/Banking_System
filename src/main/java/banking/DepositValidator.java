@@ -8,13 +8,15 @@ public class DepositValidator {
 	}
 
 	public boolean validate(String command) {
+
 		String[] tokens = command.split(" ");
+
 		if (tokens.length != 3) {
 			return false;
 		}
 
-		String uniqueId = tokens[1];
 		String amount = tokens[2];
+		String uniqueId = tokens[1];
 
 		if (!bank.accountExistByUniqueId(uniqueId)) {
 			return false;
