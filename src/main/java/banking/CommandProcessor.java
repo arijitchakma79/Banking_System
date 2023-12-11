@@ -17,27 +17,27 @@ public class CommandProcessor {
 
 	public void processCommand(String command) {
 		String[] parts = command.split(" ");
-		String action = parts[0];
+		String action = parts[0].toLowerCase();
 
 		switch (action) {
 		case "create":
-		case "Create":
+
 			createCommand(parts);
 			break;
+
 		case "deposit":
-		case "Deposit":
 			depositCommand(parts);
 			break;
+
 		case "withdraw":
-		case "Withdraw":
 			withdrawCommand(parts);
 			break;
 		case "transfer":
-		case "Transfer":
+
 			transferCommand(parts);
 			break;
 		case "pass":
-		case "Pass":
+
 			passTimeCommand(parts);
 			break;
 		default:
@@ -71,7 +71,7 @@ public class CommandProcessor {
 	}
 
 	private void createCommand(String[] parts) {
-		String accountType = parts[1];
+		String accountType = parts[1].toLowerCase();
 		String uniqueId = parts[2];
 		double apr = Double.parseDouble(parts[3]);
 
@@ -183,7 +183,7 @@ public class CommandProcessor {
 		decimalFormat.setRoundingMode(RoundingMode.FLOOR);
 
 		String accountType = account instanceof Checking ? "Checking"
-				: account instanceof Savings ? "Savings" : account instanceof CertificateOfDeposit ? "CD" : "Unknown";
+				: account instanceof Savings ? "Savings" : account instanceof CertificateOfDeposit ? "Cd" : "Unknown";
 
 		String id = account.getUniqueId();
 		String balance = decimalFormat.format(account.getBalance());

@@ -765,4 +765,22 @@ public class CommandValidatorTest {
 		assertFalse(actual);
 	}
 
+	@Test
+	void testing_case_insensitivity_for_checking() {
+		boolean actual = accountValidator.validate("CreaTe cHeckIng 12345678 0.2");
+		assertTrue(actual);
+	}
+
+	@Test
+	void testing_case_insensitivity_for_savings() {
+		boolean actual = accountValidator.validate("CreaTe SAvinGS 12345678 0.2");
+		assertTrue(actual);
+	}
+
+	@Test
+	void testing_case_insensitivity_for_cd() {
+		boolean actual = accountValidator.validate("CreaTe cD 12345678 0.2 2000");
+		assertTrue(actual);
+	}
+
 }

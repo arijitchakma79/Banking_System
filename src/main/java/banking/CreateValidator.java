@@ -9,7 +9,7 @@ public class CreateValidator {
 
 	public boolean validate(String command) {
 		String[] tokens = command.split(" ");
-		if (!"cd".equals(tokens[1])) {
+		if (!"cd".equals(tokens[1].toLowerCase())) {
 			if (tokens.length != 4) {
 				return false;
 			}
