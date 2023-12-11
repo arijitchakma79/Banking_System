@@ -1,11 +1,24 @@
 package banking;
 
+/**
+ * Validator for the "pass" command that advances time in the banking system.
+ * This class currently has an empty constructor because no initialization is
+ * needed.
+ */
 public class passTimeValidator {
 
+	/**
+	 * Empty constructor since no initialization is required.
+	 */
 	public passTimeValidator() {
-
 	}
 
+	/**
+	 * Validates the "pass" command.
+	 *
+	 * @param command The pass command string.
+	 * @return true if the command is valid, false otherwise.
+	 */
 	public boolean validate(String command) {
 		String[] token = command.split(" ");
 		if (token.length != 2) {

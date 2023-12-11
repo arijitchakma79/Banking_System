@@ -1,6 +1,12 @@
 package banking;
 
 public class ValidationUtils {
+
+	private ValidationUtils() {
+		// Private constructor to prevent instantiation
+		throw new UnsupportedOperationException("Utility class, cannot be instantiated.");
+	}
+
 	public static boolean isValidDoubleInRange(String value, double min, double max) {
 		try {
 			double doubleValue = Double.parseDouble(value);

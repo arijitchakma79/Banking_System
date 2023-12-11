@@ -11,11 +11,11 @@ public abstract class Account {
 	private Integer time;
 	private List<String> transactionCommands;
 
-	public Account(String uniqueId, double balance, double apr) {
+	protected Account(String uniqueId, double balance, double apr) {
 		initialize(uniqueId, balance, apr);
 	}
 
-	public Account(String uniqueId, double apr) {
+	protected Account(String uniqueId, double apr) {
 
 		initialize(uniqueId, DEFAULT_BALANCE, apr);
 	}
