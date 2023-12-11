@@ -784,4 +784,72 @@ public class CommandValidatorTest {
 		assertTrue(actual);
 	}
 
+	@Test
+	void validate_checking_if_cd_account_is_eligible_to_withdraw_at_12_months() {
+		Account cd = new CertificateOfDeposit("12345678", 2, 2000);
+		bank.addAccount(cd);
+		bank.passTime(12);
+		boolean isEligible = ((CertificateOfDeposit) cd).isEligibleForWithdrawal();
+		assertFalse(isEligible);
+	}
+
+	@Test
+	void validate_pass_time_command_with_max_months() {
+		boolean actual = accountValidator.validate("Pass 60");
+		assertTrue(actual);
+	}
+
+	@Test
+	void validate_pass_time_with_too_many_arguments() {
+		boolean actual = accountValidator.validate("Pass 10 months");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_transfer_with_too_many_arguments() {
+		Account saving = new Savings("12345677", 2);
+		bank.addAccount(saving);
+		Account checking = new Checking("12345678", 3);
+		bank.addAccount(checking);
+		boolean actual = accountValidator.validate("Transfer 12345677 12345678 0 invalid");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_withdrawing_string_from_cd_account() {
+		Account cd = new CertificateOfDeposit("12345678", 2, 2000);
+		bank.addAccount(cd);
+		bank.passTime(13);
+		boolean actual = accountValidator.validate("Withdraw 12345678 onethousand");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_withdrawing_from_checking_account_with_string() {
+		Account checking = new Checking("12345678", 2);
+		bank.addAccount(checking);
+		bank.depositAmount("12345678", 500);
+		boolean actual = accountValidator.validate("Withdraw 12345678 twohundred");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_withdrawing_from_savings_account_with_string() {
+		Account savings = new Savings("12345678", 2);
+		bank.addAccount(savings);
+		bank.depositAmount("12345678", 500);
+		boolean actual = accountValidator.validate("Withdraw 12345678 twohundred");
+		assertFalse(actual);
+	}
+
+	@Test
+	void validate_withdrawing_from_savings_account_more_times_than_max_withdrawals_per_month() {
+		Account savings = new Savings("12345678", 2);
+		bank.addAccount(savings);
+		bank.depositAmount("12345678", 2000);
+		bank.withdrawAmount("12345678", 100);
+		boolean actual = accountValidator.validate("Withdraw 12345678 100");
+		assertFalse(actual);
+	}
+
 }

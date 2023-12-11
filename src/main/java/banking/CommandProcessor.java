@@ -1,6 +1,5 @@
 package banking;
 
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ public class CommandProcessor {
 		if (!action.equalsIgnoreCase("create") && !action.equalsIgnoreCase("pass")) {
 			String accountUniqueId = action.equalsIgnoreCase("transfer") ? parts[2] : parts[1];
 			Account account = bank.retrieveAccount(accountUniqueId);
-			validateAccountExists(account, accountUniqueId);
+
 			account.addTransactionCommand(command);
 		}
 	}
@@ -79,7 +78,7 @@ public class CommandProcessor {
 		String uniqueId = parts[1];
 		double depositAmount = Double.parseDouble(parts[2]);
 		Account account = bank.retrieveAccount(uniqueId);
-		validateAccountExists(account, uniqueId);
+
 		if (!(account instanceof CertificateOfDeposit)) {
 			bank.depositAmount(uniqueId, depositAmount);
 		} else {
@@ -91,7 +90,7 @@ public class CommandProcessor {
 		String uniqueId = parts[1];
 		double withdrawAmount = Double.parseDouble(parts[2]);
 		Account account = bank.retrieveAccount(uniqueId);
-		validateAccountExists(account, uniqueId);
+
 		if (account instanceof CertificateOfDeposit) {
 			processCertificateOfDepositWithdrawal((CertificateOfDeposit) account, withdrawAmount);
 		} else if (account instanceof Savings) {
@@ -151,7 +150,6 @@ public class CommandProcessor {
 
 	private String formatAccountState(Account account) {
 		DecimalFormat decimalFormat = new DecimalFormat("0.00");
-		decimalFormat.setRoundingMode(RoundingMode.FLOOR);
 
 		String accountType = getAccountType(account);
 		String id = account.getUniqueId();
@@ -173,9 +171,4 @@ public class CommandProcessor {
 		}
 	}
 
-	private void validateAccountExists(Account account, String uniqueId) {
-		if (account == null) {
-			throw new IllegalArgumentException("Account Not Found: " + uniqueId);
-		}
-	}
 }

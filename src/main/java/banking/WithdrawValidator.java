@@ -51,11 +51,10 @@ public class WithdrawValidator {
 			return isWithdrawnValidForSaving((Savings) account, amountValue);
 		} else if (account instanceof Checking) {
 			return isWithdrawnValidForChecking((Checking) account, amountValue);
-		} else if (account instanceof CertificateOfDeposit) {
+		} else {
 			return isWithdrawnValidForCD((CertificateOfDeposit) account, amountValue);
 		}
 
-		return false;
 	}
 
 	private boolean isWithdrawnValidForCD(CertificateOfDeposit cdAccount, double amountValue) {

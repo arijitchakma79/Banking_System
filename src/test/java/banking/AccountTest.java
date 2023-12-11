@@ -78,4 +78,12 @@ public class AccountTest {
 		assertEquals(2000, saving.getBalance());
 	}
 
+	@Test
+	void withdraw_zero_from_account_with_zero_balance() {
+		checkingAccount.depositBalance(0);
+		checkingAccount.withdrawBalance(0);
+		double actual = checkingAccount.getBalance();
+		assertEquals(0, actual);
+	}
+
 }
