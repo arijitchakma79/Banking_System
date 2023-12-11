@@ -44,10 +44,29 @@ public class CommandProcessor {
 			throw new IllegalArgumentException("Unsupported action: " + action);
 		}
 
-		output.addAll(collectAccountOutput());
+		if (!action.equalsIgnoreCase("create") && !action.equalsIgnoreCase("pass")) {
+
+			String accountUniqueId;
+			if (action.equalsIgnoreCase("transfer")) {
+				accountUniqueId = parts[2];
+			}
+
+			else {
+				accountUniqueId = parts[1];
+			}
+			Account account = bank.retrieveAccount(accountUniqueId);
+			if (account != null) {
+				account.addTransactionCommand(command);
+			} else {
+				throw new IllegalArgumentException("Account Not Found: " + accountUniqueId);
+			}
+		}
+
 	}
 
 	public List<String> getOutput() {
+		List<String> accountOutput = collectAccountOutput();
+		output.addAll(accountOutput);
 		return new ArrayList<>(output);
 	}
 
@@ -170,7 +189,7 @@ public class CommandProcessor {
 		String balance = decimalFormat.format(account.getBalance());
 		String apr = decimalFormat.format(account.getAPR());
 
-		return String.format(Locale.US, "%s %s %s %s", accountType, id, balance, apr);
+		return String.format(Locale.UK, "%s %s %s %s", accountType, id, balance, apr);
 	}
 
 }

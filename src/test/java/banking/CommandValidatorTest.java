@@ -265,7 +265,7 @@ public class CommandValidatorTest {
 	void validate_deposit_to_checking_account_with_valid_amount() {
 		Account checking = new Checking("12345678", 0.01);
 		bank.addAccount(checking);
-		boolean actual = accountValidator.validate("deposit 12345678 500");
+		boolean actual = accountValidator.validate("deposit 12345678 700");
 		assertTrue(actual);
 	}
 

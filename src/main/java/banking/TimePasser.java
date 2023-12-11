@@ -1,5 +1,6 @@
 package banking;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class TimePasser {
@@ -10,6 +11,7 @@ public class TimePasser {
 	}
 
 	public void passTime(int months) {
+
 		if (months < 1 || months > 60) {
 			throw new IllegalArgumentException("Months must be between 1 and 60");
 		}
@@ -20,7 +22,7 @@ public class TimePasser {
 	}
 
 	private void processMonths() {
-		Map<String, Account> accounts = bank.getAccounts();
+		Map<String, Account> accounts = new HashMap<>(bank.getAccounts());
 
 		for (Account account : accounts.values()) {
 			if (account.getBalance() <= 0) {

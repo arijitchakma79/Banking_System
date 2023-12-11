@@ -15,7 +15,7 @@ public class CreateValidator {
 			}
 		}
 
-		String accountType = tokens[1];
+		String accountType = tokens[1].toLowerCase();
 		String uniqueId = tokens[2];
 		String apr = tokens[3];
 

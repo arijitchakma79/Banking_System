@@ -52,7 +52,7 @@ public abstract class Account {
 			throw new UnsupportedOperationException("Transfers from CertificateOfDeposit accounts are not allowed.");
 		}
 
-		if (amount > 0) {
+		if (amount > 0 && this.getBalance() >= amount) {
 			this.withdrawBalance(amount);
 			toAccount.depositBalance(amount);
 		}

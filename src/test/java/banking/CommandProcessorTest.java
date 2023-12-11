@@ -265,4 +265,31 @@ public class CommandProcessorTest {
 		assertEquals(1800, bank.retrieveAccount("12345678").getBalance());
 	}
 
+	@Test
+	void ene() {
+		String saving = "Create savings 12345678 0.6";
+		String deposit = "Deposit 12345678 700";
+		String createChecking = "create checking 98765432 0.01";
+		String depositChecking = "Deposit 98765432 300";
+		String transfer = "Transfer 98765432 12345678 300";
+		String passTime = "Pass 1";
+		String createCD = "Create cd 23456789 1.2 2000";
+
+		commandProcessor.processCommand(saving);
+		commandProcessor.processCommand(deposit);
+		commandProcessor.processCommand(createChecking);
+		commandProcessor.processCommand(depositChecking);
+		System.out.println("Saving before transfer: " + bank.retrieveAccount("12345678").getBalance());
+		System.out.println("Checking before transfer: " + bank.retrieveAccount("98765432").getBalance());
+		commandProcessor.processCommand(transfer);
+		System.out.println("Saving after transfer: " + bank.retrieveAccount("12345678").getBalance());
+		System.out.println("Checking after transfer: " + bank.retrieveAccount("98765432").getBalance());
+		commandProcessor.processCommand(passTime);
+
+		System.out.println(bank.retrieveAccount("12345678").getTime());
+		System.out.println(bank.retrieveAccount("12345678").getBalance());
+		System.out.println(bank.accountExistByUniqueId("12345678"));
+		System.out.println(bank.accountExistByUniqueId("98765432"));
+	}
+
 }

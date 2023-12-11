@@ -21,15 +21,15 @@ public class CommandValidator {
 	public boolean validate(String command) {
 		String[] tokens = command.split(" ");
 		String action = tokens[0].toLowerCase();
-		if (action.equals("create") || action.equals("Create")) {
+		if (action.equals("create")) {
 			return createValidator.validate(command);
-		} else if (action.equals("deposit") || action.equals("Deposit")) {
+		} else if (action.equals("deposit")) {
 			return depositValidator.validate(command);
-		} else if (action.equals("withdraw") || action.equals("Withdraw")) {
+		} else if (action.equals("withdraw")) {
 			return withdrawValidator.validate(command);
-		} else if (action.equals("transfer") || action.equals("Transfer")) {
+		} else if (action.equals("transfer")) {
 			return transferValidator.validate(command);
-		} else if (action.equals("pass") || action.equals("Pass")) {
+		} else if (action.equals("pass")) {
 			return passTimeValidator.validate(command);
 		}
 		return false;
